@@ -1,35 +1,18 @@
 import React, { Component } from "react";
-import { Platform, StyleSheet, Text, View, Dimensions } from "react-native";
+import { View } from "react-native";
 import { Router, Scene } from "react-native-router-flux";
 import GameBoard from "./src/containers/GameBoard/GameBoard";
 import ScoreBoard from "./src/containers/ScoreBoard/ScoreBoard";
 import StartGame from "./src/containers/StartGame/StartGame";
+import Classes from "./AppStyles";
 
 export default class App extends Component {
   render() {
     return (
-      <View
-        style={{
-          width: "100%",
-          height: "100%"
-        }}
-      >
-        {/* <View style={{ width: "100%" }}> */}
+      <View style={Classes.app}>
         <ScoreBoard />
-        <Router
-          sceneStyle={{
-            width: "100%",
-            backgroundColor: "red",
-            paddingTop: Dimensions.get("window").height / 7
-          }}
-        >
+        <Router sceneStyle={Classes.appSceneStyle}>
           <Scene key="root">
-            {/* <Scene
-                key="scoreBoard"
-                component={ScoreBoard}
-                title="scoreBoard"
-              /> */}
-
             <Scene
               key="gameBoard"
               component={GameBoard}
@@ -40,12 +23,7 @@ export default class App extends Component {
             <Scene key="test" component={StartGame} title="test" hideNavBar />
           </Scene>
         </Router>
-        {/* </View> */}
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {}
-});
