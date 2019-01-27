@@ -7,7 +7,7 @@ export default StyleSheet.create({
   },
   appSceneStyle: {
     width: "100%",
-    backgroundColor: "pink",
-    paddingTop: Dimensions.get("window").height / 7
+    backgroundColor: "pink"
+    // paddingTop: Dimensions.get("window").height / 7
   }
 });

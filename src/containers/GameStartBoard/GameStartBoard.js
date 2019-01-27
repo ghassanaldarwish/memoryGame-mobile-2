@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { View, Image, Text, Animated, TouchableOpacity } from "react-native";
 import CardBack from "../../components/CardBack/CardBack";
 
@@ -7,6 +7,7 @@ import Cards from "../../components/Card/Card";
 import Classes from "./GameStartBoardStyles";
 
 import BG from "../../assets/back.jpg";
+import ScoreBoard from "../ScoreBoard/ScoreBoard";
 
 export default class GameStartBoard extends Component {
   componentWillMount() {
@@ -55,45 +56,48 @@ export default class GameStartBoard extends Component {
       transform: [{ rotateY: this.backInterpolate }]
     };
     return (
-      <View style={Classes.GameStartBoard}>
-        {this.props.cards.map(card => (
-          <View
-            key={card.id}
-            style={{
-              flexWrap: "wrap",
-              backgroundColor: "black"
-            }}
-          >
-            <Animated.View
-              style={[
-                Classes.flipCard,
-                frontAnimatedStyle,
-                { opacity: this.frontOpacity }
-              ]}
+      <Fragment>
+        <ScoreBoard />
+        <View style={Classes.GameStartBoard}>
+          {this.props.cards.map(card => (
+            <View
+              key={card.id}
+              style={{
+                flexWrap: "wrap",
+                backgroundColor: "black"
+              }}
             >
-              <Image
-                source={BG}
-                style={Classes.backCard}
-                onPress={this.flipCard}
-              />
-            </Animated.View>
+              <Animated.View
+                style={[
+                  Classes.flipCard,
+                  frontAnimatedStyle,
+                  { opacity: this.frontOpacity }
+                ]}
+              >
+                <Image
+                  source={BG}
+                  style={Classes.backCard}
+                  onPress={this.flipCard}
+                />
+              </Animated.View>
 
-            <Animated.View
-              style={[
-                Classes.flipCard,
-                Classes.flipCardBack,
-                backAnimatedStyle,
-                { opacity: this.backOpacity }
-              ]}
-            >
-              <Cards img={card.img} />
-            </Animated.View>
-            <TouchableOpacity onPress={this.flipCard}>
-              <Text>ggg</Text>
-            </TouchableOpacity>
-          </View>
-        ))}
-      </View>
+              <Animated.View
+                style={[
+                  Classes.flipCard,
+                  Classes.flipCardBack,
+                  backAnimatedStyle,
+                  { opacity: this.backOpacity }
+                ]}
+              >
+                <Cards img={card.img} />
+              </Animated.View>
+              <TouchableOpacity onPress={this.flipCard}>
+                <Text>dddd</Text>
+              </TouchableOpacity>
+            </View>
+          ))}
+        </View>
+      </Fragment>
     );
   }
 }

@@ -21,16 +21,22 @@ export default class App extends Component {
     show: true,
     highestScore: 0
   };
+
+  onStartHandler = () => {
+    this.setState({ isStarting: true });
+  };
+
   render() {
     console.log("apppppp", this.state.cards);
     return (
       <View style={Classes.app}>
-        <ScoreBoard />
         <Router sceneStyle={Classes.appSceneStyle}>
           <Scene key="root">
             <Scene
               key="gameBoard"
-              component={GameBoard}
+              component={() => (
+                <GameBoard onStartHandler={this.onStartHandler} />
+              )}
               title="gameBoard"
               initial
               hideNavBar

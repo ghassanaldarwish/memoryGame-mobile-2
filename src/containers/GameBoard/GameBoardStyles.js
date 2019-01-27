@@ -9,6 +9,18 @@ export default StyleSheet.create({
     justifyContent: "center",
     flexWrap: "wrap",
     // alignContent: "center",
-    position: "relative"
+    position: "relative",
+    marginTop: Dimensions.get("window").height / 6
+  },
+  GameBoardHeader: {
+    width: "100%",
+    backgroundColor: "gold",
+    height: "10%",
+    alignItems: "center"
+  },
+  GameBoardHeaderTextTittle: {
+    fontSize: 20,
+    color: "#000",
+    fontWeight: "bold"
   }
 });

@@ -5,7 +5,8 @@ export default StyleSheet.create({
     width: "100%",
     backgroundColor: "gold",
     height: "10%",
-    alignItems: "center"
+    alignItems: "center",
+    marginBottom: Dimensions.get("window").height / 7
 
     // justifyContent: "center"
   },
