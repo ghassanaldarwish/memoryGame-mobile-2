@@ -9,7 +9,7 @@ import Classes from "./GameStartBoardStyles";
 import BG from "../../assets/back.jpg";
 import ScoreBoard from "../ScoreBoard/ScoreBoard";
 
-export default class GameStartBoard extends Component {
+class FlipCard extends Component {
   state = {
     markOnCard: true
   };
@@ -36,23 +36,8 @@ export default class GameStartBoard extends Component {
       outputRange: [0, 1]
     });
   }
-  flipCard = () => {
-    this.setState({ markOnCard: !this.state.markOnCard });
-    if (this.value >= 90) {
-      Animated.spring(this.animatedValue, {
-        toValue: 0,
-        friction: 8,
-        tension: 10
-      }).start();
-    } else {
-      Animated.spring(this.animatedValue, {
-        toValue: 180,
-        friction: 8,
-        tension: 10
-      }).start();
-    }
-
-    setTimeout(() => {
+  flipCard = id => {
+    if (true) {
       this.setState({ markOnCard: !this.state.markOnCard });
       if (this.value >= 90) {
         Animated.spring(this.animatedValue, {
@@ -67,7 +52,24 @@ export default class GameStartBoard extends Component {
           tension: 10
         }).start();
       }
-    }, 2000);
+
+      setTimeout(() => {
+        this.setState({ markOnCard: !this.state.markOnCard });
+        if (this.value >= 90) {
+          Animated.spring(this.animatedValue, {
+            toValue: 0,
+            friction: 8,
+            tension: 10
+          }).start();
+        } else {
+          Animated.spring(this.animatedValue, {
+            toValue: 180,
+            friction: 8,
+            tension: 10
+          }).start();
+        }
+      }, 2000);
+    }
   };
   render() {
     const frontAnimatedStyle = {
@@ -78,46 +80,51 @@ export default class GameStartBoard extends Component {
     };
 
     return (
+      <View>
+        <Animated.View
+          style={[
+            Classes.flipCard,
+            frontAnimatedStyle,
+            {
+              opacity: this.frontOpacity
+            }
+          ]}
+        >
+          <Image source={BG} style={Classes.backCard} onPress={this.flipCard} />
+        </Animated.View>
+
+        <Animated.View
+          style={[
+            Classes.flipCard,
+            Classes.flipCardBack,
+            backAnimatedStyle,
+            { opacity: this.backOpacity }
+          ]}
+        >
+          <Cards img={this.props.card.img} />
+        </Animated.View>
+        {this.state.markOnCard ? (
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={Classes.gameStartBoardCardTouchableOpacity}
+            onPress={() => this.flipCard(this.props.card.id)}
+          >
+            <Text style={Classes.gameStartBoardCardTextMark}>?</Text>
+          </TouchableOpacity>
+        ) : null}
+      </View>
+    );
+  }
+}
+
+export default class GameStartBoard extends Component {
+  render() {
+    return (
       <Fragment>
         <ScoreBoard />
         <View style={Classes.gameStartBoard}>
           {this.props.cards.map(card => (
-            <View key={card.id} style={Classes.GameStartBoardCard}>
-              <Animated.View
-                style={[
-                  Classes.flipCard,
-                  frontAnimatedStyle,
-                  {
-                    opacity: this.frontOpacity
-                  }
-                ]}
-              >
-                <Image
-                  source={BG}
-                  style={Classes.backCard}
-                  onPress={this.flipCard}
-                />
-              </Animated.View>
-
-              <Animated.View
-                style={[
-                  Classes.flipCard,
-                  Classes.flipCardBack,
-                  backAnimatedStyle,
-                  { opacity: this.backOpacity }
-                ]}
-              >
-                <Cards img={card.img} />
-              </Animated.View>
-              {this.state.markOnCard ? (
-                <TouchableOpacity
-                  style={Classes.gameStartBoardCardTouchableOpacity}
-                  onPress={this.flipCard}
-                >
-                  <Text style={Classes.gameStartBoardCardTextMark}>?</Text>
-                </TouchableOpacity>
-              ) : null}
-            </View>
+            <FlipCard key={card.id} card={card} />
           ))}
         </View>
       </Fragment>

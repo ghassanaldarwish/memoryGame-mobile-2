@@ -33,11 +33,6 @@ export default StyleSheet.create({
     borderWidth: 2,
     borderRadius: 12
   },
-  gameStartBoardCard: {
-    flexWrap: "wrap",
-    backgroundColor: "black",
-    position: "relative"
-  },
   gameStartBoardCardTouchableOpacity: {
     borderColor: "#fff",
     borderWidth: 2,

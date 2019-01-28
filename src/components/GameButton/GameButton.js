@@ -7,6 +7,7 @@ export default class GameButton extends Component {
   render() {
     return (
       <TouchableOpacity
+        activeOpacity={0.7}
         onPress={() => Actions.gameStartBoard()}
         style={Classes.playButton}
       >
