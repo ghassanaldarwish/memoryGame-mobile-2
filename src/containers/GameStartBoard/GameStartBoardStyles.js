@@ -1,7 +1,7 @@
 import { Dimensions, StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-  GameStartBoard: {
+  gameStartBoard: {
     backgroundColor: "blue",
     width: "100%",
     height: "100%",
@@ -16,11 +16,7 @@ export default StyleSheet.create({
     height: "100%",
     borderRadius: 7
   },
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
-  },
+
   flipCard: {
     width: Dimensions.get("window").width / 4,
     height: Dimensions.get("window").width / 4,
@@ -30,8 +26,30 @@ export default StyleSheet.create({
     // backfaceVisibility: "hidden"
   },
   flipCardBack: {
-    backgroundColor: "red",
+    backgroundColor: "#ff0",
     position: "absolute",
-    top: 0
+    top: 0,
+    borderColor: "#fff",
+    borderWidth: 2,
+    borderRadius: 12
+  },
+  gameStartBoardCard: {
+    flexWrap: "wrap",
+    backgroundColor: "black",
+    position: "relative"
+  },
+  gameStartBoardCardTouchableOpacity: {
+    borderColor: "#fff",
+    borderWidth: 2,
+    borderRadius: 12,
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    justifyContent: "center"
+  },
+  gameStartBoardCardTextMark: {
+    color: "#fff",
+    fontSize: 40,
+    textAlign: "center"
   }
 });

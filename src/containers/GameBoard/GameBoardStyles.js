@@ -2,7 +2,7 @@ import { Dimensions, StyleSheet } from "react-native";
 
 export default StyleSheet.create({
   gameBoard: {
-    backgroundColor: "blue",
+    backgroundColor: "green",
     width: "100%",
     height: "100%",
     flexDirection: "row",

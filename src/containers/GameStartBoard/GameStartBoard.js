@@ -10,6 +10,9 @@ import BG from "../../assets/back.jpg";
 import ScoreBoard from "../ScoreBoard/ScoreBoard";
 
 export default class GameStartBoard extends Component {
+  state = {
+    markOnCard: true
+  };
   componentWillMount() {
     this.animatedValue = new Animated.Value(0);
     this.value = 0;
@@ -34,6 +37,7 @@ export default class GameStartBoard extends Component {
     });
   }
   flipCard = () => {
+    this.setState({ markOnCard: !this.state.markOnCard });
     if (this.value >= 90) {
       Animated.spring(this.animatedValue, {
         toValue: 0,
@@ -47,6 +51,23 @@ export default class GameStartBoard extends Component {
         tension: 10
       }).start();
     }
+
+    setTimeout(() => {
+      this.setState({ markOnCard: !this.state.markOnCard });
+      if (this.value >= 90) {
+        Animated.spring(this.animatedValue, {
+          toValue: 0,
+          friction: 8,
+          tension: 10
+        }).start();
+      } else {
+        Animated.spring(this.animatedValue, {
+          toValue: 180,
+          friction: 8,
+          tension: 10
+        }).start();
+      }
+    }, 2000);
   };
   render() {
     const frontAnimatedStyle = {
@@ -55,23 +76,20 @@ export default class GameStartBoard extends Component {
     const backAnimatedStyle = {
       transform: [{ rotateY: this.backInterpolate }]
     };
+
     return (
       <Fragment>
         <ScoreBoard />
-        <View style={Classes.GameStartBoard}>
+        <View style={Classes.gameStartBoard}>
           {this.props.cards.map(card => (
-            <View
-              key={card.id}
-              style={{
-                flexWrap: "wrap",
-                backgroundColor: "black"
-              }}
-            >
+            <View key={card.id} style={Classes.GameStartBoardCard}>
               <Animated.View
                 style={[
                   Classes.flipCard,
                   frontAnimatedStyle,
-                  { opacity: this.frontOpacity }
+                  {
+                    opacity: this.frontOpacity
+                  }
                 ]}
               >
                 <Image
@@ -91,9 +109,14 @@ export default class GameStartBoard extends Component {
               >
                 <Cards img={card.img} />
               </Animated.View>
-              <TouchableOpacity onPress={this.flipCard}>
-                <Text>dddd</Text>
-              </TouchableOpacity>
+              {this.state.markOnCard ? (
+                <TouchableOpacity
+                  style={Classes.gameStartBoardCardTouchableOpacity}
+                  onPress={this.flipCard}
+                >
+                  <Text style={Classes.gameStartBoardCardTextMark}>?</Text>
+                </TouchableOpacity>
+              ) : null}
             </View>
           ))}
         </View>
