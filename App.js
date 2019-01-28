@@ -9,17 +9,7 @@ import generateCards from "./src/generateCards/generateCards";
 
 export default class App extends Component {
   state = {
-    gameSize: null,
-    isPageLoading: false,
-    cards: generateCards(),
-    isStarting: false,
-    scoreOn: false,
-    gameOn: false,
-    isLocked: false,
-    isCompleted: false,
-    score: 0,
-    show: true,
-    highestScore: 0
+    isStarting: false
   };
 
   onStartHandler = () => {
@@ -27,7 +17,6 @@ export default class App extends Component {
   };
 
   render() {
-    console.log("apppppp", this.state.cards);
     return (
       <View style={Classes.app}>
         <Router sceneStyle={Classes.appSceneStyle}>
@@ -43,7 +32,7 @@ export default class App extends Component {
             />
             <Scene
               key="gameStartBoard"
-              component={() => <GameStartBoard cards={this.state.cards} />}
+              component={GameStartBoard}
               title="GameStartBoard"
               hideNavBar
             />

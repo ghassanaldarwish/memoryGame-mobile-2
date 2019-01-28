@@ -8,10 +8,12 @@ import Classes from "./GameStartBoardStyles";
 
 import BG from "../../assets/back.jpg";
 import ScoreBoard from "../ScoreBoard/ScoreBoard";
+import generateCards from "../../generateCards/generateCards";
 
 class FlipCard extends Component {
   state = {
-    markOnCard: true
+    markOnCard: true,
+    cardCheck: []
   };
   componentWillMount() {
     this.animatedValue = new Animated.Value(0);
@@ -36,7 +38,7 @@ class FlipCard extends Component {
       outputRange: [0, 1]
     });
   }
-  flipCard = id => {
+  flipCard = (card, index) => {
     if (true) {
       this.setState({ markOnCard: !this.state.markOnCard });
       if (this.value >= 90) {
@@ -53,22 +55,28 @@ class FlipCard extends Component {
         }).start();
       }
 
-      setTimeout(() => {
-        this.setState({ markOnCard: !this.state.markOnCard });
-        if (this.value >= 90) {
-          Animated.spring(this.animatedValue, {
-            toValue: 0,
-            friction: 8,
-            tension: 10
-          }).start();
-        } else {
-          Animated.spring(this.animatedValue, {
-            toValue: 180,
-            friction: 8,
-            tension: 10
-          }).start();
-        }
-      }, 2000);
+      this.props.flipCardCheck(index, card);
+
+      this.setState({ cardCheck: this.state.cardCheck.push(card.cardName) });
+
+      console.log(this.state.cardCheck);
+
+      // setTimeout(() => {
+      //   this.setState({ markOnCard: !this.state.markOnCard });
+      //   if (this.value >= 90) {
+      //     Animated.spring(this.animatedValue, {
+      //       toValue: 0,
+      //       friction: 8,
+      //       tension: 10
+      //     }).start();
+      //   } else {
+      //     Animated.spring(this.animatedValue, {
+      //       toValue: 180,
+      //       friction: 8,
+      //       tension: 10
+      //     }).start();
+      //   }
+      // }, 2000);
     }
   };
   render() {
@@ -107,7 +115,7 @@ class FlipCard extends Component {
           <TouchableOpacity
             activeOpacity={0.7}
             style={Classes.gameStartBoardCardTouchableOpacity}
-            onPress={() => this.flipCard(this.props.card.id)}
+            onPress={() => this.flipCard(this.props.card, this.props.index)}
           >
             <Text style={Classes.gameStartBoardCardTextMark}>?</Text>
           </TouchableOpacity>
@@ -118,13 +126,57 @@ class FlipCard extends Component {
 }
 
 export default class GameStartBoard extends Component {
+  state = {
+    isPageLoading: false,
+    cards: generateCards(),
+    scoreOn: false,
+    gameOn: false,
+    isLocked: false,
+    isCompleted: false,
+    score: 0,
+    show: true,
+    highestScore: 0
+  };
+
+  flipCardCheck = (index, card) => {
+    let flipCardCheck = this.state.cards.map((item, i) =>
+      i === index ? { ...item, flipped: true } : item
+    );
+
+    this.setState({ cards: flipCardCheck });
+
+    // this.setState({ cards: flipCardCheck });
+
+    // const matchCardCheck = this.state.cards.map((item, i) =>
+    //   item.flipped === true &&
+    //   card.flipped === true &&
+    //   item.cardName === card.cardName
+    //     ? { ...item, matched: true }
+    //     : item
+    // );
+
+    // this.setState({ cards: flipCardCheck });
+
+    // const matchedCards = this.state.cards.filter(
+    //   i => i.flipped === true && i.cardName === card.cardName
+    // );
+
+    // this.setState({ cards: cloneState.cards });
+  };
+
   render() {
+    console.log("weeeeeeeee", this.state.cards);
     return (
       <Fragment>
         <ScoreBoard />
         <View style={Classes.gameStartBoard}>
-          {this.props.cards.map(card => (
-            <FlipCard key={card.id} card={card} />
+          {this.state.cards.map((card, index) => (
+            <FlipCard
+              key={index}
+              card={card}
+              index={index}
+              flipCardCheck={this.flipCardCheck}
+            />
           ))}
         </View>
       </Fragment>
