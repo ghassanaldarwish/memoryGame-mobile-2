@@ -53,6 +53,9 @@ class FlipCard extends Component {
           friction: 8,
           tension: 10
         }).start();
+        // if (!this.props.show) {
+        //   setTimeout(() => this.setState({ cardCheck: false }), 1000);
+        // }
       }
 
       this.props.flipCardCheck(index, card);
@@ -79,6 +82,25 @@ class FlipCard extends Component {
       // }, 2000);
     }
   };
+  componentDidUpdate() {
+    if (!this.props.show) {
+      // this.setState({ markOnCard: !this.state.markOnCard });
+      if (this.value >= 90) {
+        Animated.spring(this.animatedValue, {
+          toValue: 0,
+          friction: 8,
+          tension: 10
+        }).start();
+      }
+      // else {
+      //   Animated.spring(this.animatedValue, {
+      //     toValue: 180,
+      //     friction: 8,
+      //     tension: 10
+      //   }).start();
+      // }
+    }
+  }
   render() {
     const frontAnimatedStyle = {
       transform: [{ rotateY: this.frontInterpolate }]
@@ -135,15 +157,76 @@ export default class GameStartBoard extends Component {
     isCompleted: false,
     score: 0,
     show: true,
-    highestScore: 0
+    highestScore: 0,
+    flipTowCards: []
   };
+
+  componentDidUpdate() {
+    console.log("weeeeeeeee", this.state.cards);
+    console.log("state", this.state);
+  }
+
+  // componentDidUpdate() {
+  //   console.log("componentDidUpdate", this.state.cards);
+  //   const flipCardPick = this.state.cards.filter(
+  //     (item, i) => item.flipped === true
+  //   );
+  //   if (flipCardPick.length <= 1) {
+  //     this.openCards();
+  //   }
+  //   if (flipCardPick.length === 2) {
+  //     this.lockCards();
+  //   }
+
+  // this.matchCardCheck(flipCardPick);
+
+  // console.log("weeeeeeeee", this.state.cards);
+
+  // console.log("hahahah", this.state.flipTowCards);
+  // }
+  openCards = () => {
+    this.setState({ show: true });
+  };
+  lockCards = () => {
+    this.setState({ show: false });
+  };
+  // matchCardCheck = flipCardPick => {
+  //   this.setState({ flipTowCards: flipCardPick });
+  // };
+
+  componentDidMount() {
+    console.log("weeeeeeeee", this.state.cards);
+  }
 
   flipCardCheck = (index, card) => {
     let flipCardCheck = this.state.cards.map((item, i) =>
       i === index ? { ...item, flipped: true } : item
     );
+    var flipCardPick = [];
+    flipCardPick = flipCardCheck.filter((item, i) => item.flipped === true);
+
+    // if (
+    //   flipCardPick.length === 2 &&
+    //   flipCardPick[0].cardName === flipCardPick[0].cardName &&
+    //   flipCardPick[0].flipped === true &&
+    //   flipCardPick[1].flipped === true
+    // ) {
+    //   flipCardCheck = { ...flipCardCheck[index], matched: true };
+    // }
+    if (flipCardPick.length <= 1) {
+      this.openCards();
+    }
+    if (flipCardPick.length === 2) {
+      setTimeout(() => {
+        this.lockCards();
+        flipCardPick = [];
+      }, 1000);
+    }
 
     this.setState({ cards: flipCardCheck });
+    // console.log("flipCardCheck", this.state.cards);
+
+    // this.matchCardCheck(index, card);
 
     // this.setState({ cards: flipCardCheck });
 
@@ -165,7 +248,6 @@ export default class GameStartBoard extends Component {
   };
 
   render() {
-    console.log("weeeeeeeee", this.state.cards);
     return (
       <Fragment>
         <ScoreBoard />
@@ -176,6 +258,7 @@ export default class GameStartBoard extends Component {
               card={card}
               index={index}
               flipCardCheck={this.flipCardCheck}
+              show={this.state.show}
             />
           ))}
         </View>
